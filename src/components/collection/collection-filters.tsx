@@ -143,7 +143,7 @@ function ClarityCard() {
         before choosing.
       </p>
       <a
-        href="/faq"
+        href="/#faq"
         className="group mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-maroon-deep underline underline-offset-2 hover:text-maroon"
       >
         Explore our FAQ

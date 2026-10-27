@@ -186,7 +186,7 @@ export default function TrackOrderPage() {
                   available in this illustrative example.
                 </p>
                 <a
-                  href="/pages/track-your-order"
+                  href="/track-your-order"
                   className="group mt-5 inline-flex items-center gap-1.5 text-xs font-medium text-clay underline underline-offset-2 hover:text-maroon sm:text-sm"
                 >
                   View sample order details
@@ -204,7 +204,7 @@ export default function TrackOrderPage() {
               A little clarity, whenever you need it.
             </p>
             <a
-              href="/faq"
+              href="/#faq"
               className="group inline-flex shrink-0 items-center justify-center gap-2.5 rounded-lg border border-ink/30 px-6 py-3 text-sm font-medium text-ink transition-colors hover:border-maroon hover:bg-maroon hover:text-cream"
             >
               Read tracking FAQs

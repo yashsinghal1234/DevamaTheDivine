@@ -9,7 +9,7 @@ export default function FaqSection({ faqs }: { faqs: FaqItem[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="bg-cream pb-16 sm:pb-24">
+    <section id="faq" className="bg-cream pb-16 sm:pb-24">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 sm:px-6 lg:grid-cols-[2fr_3fr] lg:gap-16 lg:px-8">
         {/* Intro column */}
         <Reveal>

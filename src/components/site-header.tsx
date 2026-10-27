@@ -143,7 +143,7 @@ export default function SiteHeader() {
             ))}
           </ul>
           <a
-            href="/pages/track-your-order"
+            href="/track-your-order"
             className="group ml-auto flex items-center gap-2 py-2.5 text-xs font-medium tracking-wide text-clay transition-colors hover:text-terracotta"
           >
             Track Your Order
@@ -174,7 +174,7 @@ export default function SiteHeader() {
                 </li>
               ))}
               <li>
-                <a href="/pages/track-your-order" className="block py-2.5 font-medium hover:text-maroon">
+                <a href="/track-your-order" className="block py-2.5 font-medium hover:text-maroon">
                   Track Your Order
                 </a>
               </li>

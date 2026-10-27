@@ -55,23 +55,33 @@ const WishlistContext = createContext<WishlistContextValue | null>(null);
 
 export function WishlistProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<WishlistItem[]>([]);
+  // Becomes true once the stored wishlist has been read. Saving is gated on
+  // this so the first mount can never overwrite storage with an empty list
+  // (StrictMode runs mount effects twice in dev — without this gate the
+  // saved wishlist was wiped on every refresh).
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) setItems(JSON.parse(raw));
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) setItems(parsed);
+      }
     } catch {
       // ignore malformed storage
     }
+    setHydrated(true);
   }, []);
 
   useEffect(() => {
+    if (!hydrated) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
     } catch {
       // storage unavailable
     }
-  }, [items]);
+  }, [items, hydrated]);
 
   const has = useCallback(
     (handle: string) => items.some((i) => i.handle === handle),
