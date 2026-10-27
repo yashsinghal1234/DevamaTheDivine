@@ -1,26 +1,161 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Brand palette */
+  --color-cream: #f7f1e4;
+  --color-cream-card: #fbf6ea;
+  --color-sand: #eee5d2;
+  --color-line: #e2d6bd;
+
+  --color-maroon: #5a1e19;
+  --color-maroon-deep: #471510;
+  --color-maroon-dark: #3a110d;
+
+  --color-espresso: #2a1c15;
+  --color-coal: #1c1310;
+
+  --color-gold: #e2a83c;
+  --color-gold-deep: #c88626;
+  --color-ochre: #d99d3e;
+
+  --color-terracotta: #b4552d;
+  --color-ink: #362217;
+  --color-clay: #7a5c49;
+  --color-fog: #a08a76;
+
+  /* Fonts (wired from next/font in layout.tsx) */
+  --font-sans: var(--font-poppins);
+  --font-serif: var(--font-cormorant);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+}
+
+::selection {
+  background-color: var(--color-gold);
+  color: var(--color-maroon-dark);
+}
+
+/* Shared small-caps eyebrow label */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* Hide number input spinners (quantity fields etc.) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* ---------- Animations & transitions ---------- */
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.anim-fade-up {
+  animation: fade-up 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+.d-100 { animation-delay: 0.1s; }
+.d-200 { animation-delay: 0.2s; }
+.d-300 { animation-delay: 0.3s; }
+.d-400 { animation-delay: 0.4s; }
+.d-500 { animation-delay: 0.5s; }
+
+/* Scroll reveal (driven by the <Reveal> client component) */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Gentle zoom on large imagery */
+@keyframes kenburns {
+  from { transform: scale(1); }
+  to { transform: scale(1.06); }
+}
+.kenburns {
+  animation: kenburns 14s ease-in-out infinite alternate;
+}
+
+/* Pulsing ring around circular CTA icons */
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(226, 168, 60, 0.45); }
+  100% { box-shadow: 0 0 0 16px rgba(226, 168, 60, 0); }
+}
+.pulse-ring {
+  animation: pulse-ring 2.2s ease-out infinite;
+}
+
+/* Light sweep across gold buttons on hover */
+.btn-sheen {
+  position: relative;
+  overflow: hidden;
+}
+.btn-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 60%
+  );
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+.btn-sheen:hover::after {
+  transform: translateX(120%);
+  transition: transform 0.7s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .anim-fade-up,
+  .kenburns,
+  .pulse-ring {
+    animation: none;
+  }
+}
+
+/* Horizontal scroll rows without visible scrollbars (mobile tab chips etc.) */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
