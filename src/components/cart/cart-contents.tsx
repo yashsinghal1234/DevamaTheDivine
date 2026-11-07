@@ -3,49 +3,58 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { DemoCartItem } from "@/lib/demo-cart";
+import { useCart } from "@/components/cart-provider";
 import { inr } from "@/lib/format";
 
 type SavedItem = DemoCartItem;
 
 /**
- * Illustrative basket with real interactivity: quantity steppers, remove
- * and save-for-later all update the totals live. Nothing is persisted —
- * the Shopify Storefront cart replaces this once wired up.
+ * Basket UI wired to the shared cart provider: quantity steppers, remove
+ * and save-for-later update the totals live, through the real Shopify cart
+ * once it is connected (and locally, identically, until then).
  */
 export default function CartContents({
   initialItems,
 }: {
   initialItems: DemoCartItem[];
 }) {
-  const [items, setItems] = useState(initialItems);
+  const cart = useCart();
+  // SSR snapshot arrives from the server; the provider takes over once
+  // /api/cart answers (this keeps the two in sync in both modes).
+  const items: DemoCartItem[] = cart.ready ? cart.items : initialItems;
   const [saved, setSaved] = useState<SavedItem[]>([]);
 
-  const setQty = (handle: string, delta: number) =>
-    setItems((prev) =>
-      prev.map((item) =>
-        item.handle === handle
-          ? { ...item, quantity: Math.max(1, Math.min(9, item.quantity + delta)) }
-          : item
-      )
-    );
+  const setQty = (handle: string, delta: number) => {
+    const current = items.find((i) => i.handle === handle)?.quantity ?? 1;
+    cart.updateQty(handle, current + delta);
+  };
 
-  const remove = (handle: string) =>
-    setItems((prev) => prev.filter((item) => item.handle !== handle));
+  const remove = (handle: string) => cart.remove(handle);
 
   const saveForLater = (handle: string) => {
-    setItems((prev) => {
-      const found = prev.find((item) => item.handle === handle);
-      if (found) setSaved((s) => [...s, found]);
-      return prev.filter((item) => item.handle !== handle);
-    });
+    const found = items.find((item) => item.handle === handle);
+    if (found) setSaved((s) => [...s, found]);
+    cart.remove(handle);
   };
 
   const moveToBasket = (handle: string) => {
-    setSaved((prev) => {
-      const found = prev.find((item) => item.handle === handle);
-      if (found) setItems((b) => [...b, { ...found, quantity: 1 }]);
-      return prev.filter((item) => item.handle !== handle);
-    });
+    const found = saved.find((item) => item.handle === handle);
+    if (found) {
+      cart.add(
+        {
+          handle: found.handle,
+          title: found.title,
+          price: found.price,
+          compareAt: found.compareAt,
+          image: found.image,
+          alt: found.alt,
+          category: found.category,
+          variantId: "variantId" in found ? (found.variantId as string) : undefined,
+        },
+        1
+      );
+      setSaved((prev) => prev.filter((item) => item.handle !== handle));
+    }
   };
 
   const subtotal = items.reduce(
@@ -72,6 +81,17 @@ export default function CartContents({
             <span aria-hidden className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
           </a>
         </div>
+
+        {items.length === 0 && saved.length === 0 && (
+          <div className="mt-8 rounded-2xl border border-dashed border-line bg-cream-card p-10 text-center">
+            <p className="font-serif text-2xl text-ink">
+              Your basket is empty
+            </p>
+            <p className="mt-2 text-sm text-clay">
+              Pieces you choose will be gathered here until you check out.
+            </p>
+          </div>
+        )}
 
         {items.length === 0 && saved.length > 0 && (
           <p className="mt-6 rounded-2xl border border-dashed border-line bg-cream-card p-8 text-center text-sm text-clay">
@@ -280,12 +300,19 @@ export default function CartContents({
         )}
 
         <a
-          href="/checkout"
+          href={cart.checkoutUrl}
           className="btn-sheen mt-6 flex items-center justify-center gap-2.5 rounded-lg bg-ochre px-6 py-3.5 text-sm font-semibold text-maroon-dark transition-colors hover:bg-gold-deep"
         >
           Continue to checkout
           <span aria-hidden className="transition-transform">→</span>
         </a>
+
+        {cart.mode === "shopify" && (
+          <p className="mt-3 text-[11px] leading-relaxed text-clay/80">
+            Address and payment are completed on Shopify&rsquo;s secure
+            checkout; totals there are authoritative.
+          </p>
+        )}
 
         <a
           href="/pages/contact-us"

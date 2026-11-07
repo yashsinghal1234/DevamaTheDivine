@@ -14,6 +14,7 @@ import {
   IconUser,
 } from "./icons";
 import { useWishlist } from "./wishlist-provider";
+import { useCart } from "./cart-provider";
 
 const logo =
   "https://devamathedivine.com/cdn/shop/files/main_logo.png?height=100&v=1768676583";
@@ -26,13 +27,12 @@ const navLinks = [
   "Bracelets",
 ];
 
-// Cart will come alive once the Shopify Storefront cart is wired up.
-// The illustrative basket (/cart) currently holds two pieces.
-const cartCount = 2;
-
 export default function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { count: wishlistCount } = useWishlist();
+  const cart = useCart();
+  // Live basket count via /api/cart (demo basket until the backend connects).
+  const cartCount = cart.ready ? cart.count : 0;
 
   return (
     <header className="sticky top-0 z-50 bg-cream-card/95 backdrop-blur supports-[backdrop-filter]:bg-cream-card/85 shadow-[0_1px_0_0_var(--color-line)]">

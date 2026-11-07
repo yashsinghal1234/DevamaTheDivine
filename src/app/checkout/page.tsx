@@ -1,6 +1,8 @@
 import Reveal from "@/components/reveal";
 import ProgressSteps from "@/components/checkout/progress-steps";
 import OrderSummary from "@/components/checkout/order-summary";
+import { isShopifyConfigured } from "@/lib/shopify";
+import LiveModeNotice from "@/components/checkout/live-mode-notice";
 
 export const metadata = { title: "Checkout — Devama The Divine" };
 
@@ -67,6 +69,10 @@ export default function CheckoutPage() {
             before reviewing payment options.
           </p>
         </Reveal>
+
+        {isShopifyConfigured() && (
+          <LiveModeNotice />
+        )}
 
         {/* Checkout steps */}
         <Reveal className="mt-8 border-b border-line pb-5">

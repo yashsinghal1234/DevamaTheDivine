@@ -92,7 +92,19 @@ export default function ProductCard({
           Read more
         </a>
         <div className="mt-auto">
-          <AddToCartButton title={product.title} />
+          <AddToCartButton
+            title={product.title}
+            item={{
+              handle: product.handle,
+              title: product.title,
+              price: product.price,
+              compareAt: product.compareAt,
+              image: product.image,
+              alt: product.alt,
+              category: product.category,
+              variantId: product.variantId,
+            }}
+          />
           <p className="mt-1.5 hidden text-center text-[10px] tracking-wide text-clay/70 sm:block">
             {notePrefix}
           </p>

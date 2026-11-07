@@ -13,6 +13,10 @@ export type Product = {
   /** Options shown as dots/circles under the image (e.g. bead sizes) */
   options?: string[];
   reviewCount?: number;
+  /** First available Shopify variant — required by the Storefront cart API. */
+  variantId?: string;
+  /** Variant stock status, when the variant id is known. */
+  availableForSale?: boolean;
 };
 
 export type CollectionCard = {

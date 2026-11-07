@@ -173,7 +173,21 @@ function WishlistCard({
         )}
       </p>
       <div className="mt-auto pt-4">
-        <AddToCartButton title={item.title} label="Move to cart" />
+        <AddToCartButton
+          title={item.title}
+          label="Move to cart"
+          item={{
+            handle: item.handle,
+            title: item.title,
+            price: item.price,
+            compareAt: item.compareAt,
+            image: item.image,
+            alt: item.alt,
+            category: item.category,
+            variantId: item.variantId,
+          }}
+          onMoved={onRemove}
+        />
         <button
           type="button"
           onClick={onRemove}

@@ -2,28 +2,46 @@
 
 import { useState } from "react";
 import { IconCheck, IconPlus } from "./icons";
+import { useCart, type AddPayload } from "./cart-provider";
 
 /**
- * Demo add-to-cart. Once the Shopify Storefront cart is wired up this calls
- * `cartCreate` / `cartLinesAdd` with this merchandising line, but the visual
- * behaviour stays the same.
+ * Add-to-cart used on product cards and wishlist items. When the Shopify
+ * backend is connected it posts the variant to /api/cart (cartLinesAdd);
+ * until then it updates the local illustrative basket.
  */
 export default function AddToCartButton({
   title,
+  item,
   label = "Add to cart",
+  onMoved,
   className = "",
 }: {
   title: string;
+  /** Product payload — when provided the button actually mutates the basket. */
+  item?: AddPayload;
   /** Button text, e.g. "Add to cart" / "Move to cart" */
   label?: string;
+  /** Called after a successful add (e.g. remove the wishlist entry). */
+  onMoved?: () => void;
   className?: string;
 }) {
   const [added, setAdded] = useState(false);
+  const cart = useCart();
+
+  const move = () => {
+    if (item) {
+      cart.add(item, 1);
+      onMoved?.();
+    }
+    setAdded(true);
+    // Signal "not added" again shortly so the button can be reused.
+    setTimeout(() => setAdded(false), 1800);
+  };
 
   return (
     <button
       type="button"
-      onClick={() => setAdded(true)}
+      onClick={move}
       className={
         className ||
         `flex w-full items-center justify-center gap-2 rounded-lg border py-2.5 text-sm font-medium transition-colors ${

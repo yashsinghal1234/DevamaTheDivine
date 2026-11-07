@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import Reveal from "@/components/reveal";
 import ProductGallery from "@/components/pdp/product-gallery";
 import ProductActions from "@/components/pdp/product-actions";
@@ -6,7 +7,7 @@ import DeliveryCheck from "@/components/pdp/delivery-check";
 import SpecTabs from "@/components/pdp/spec-tabs";
 import ProductCard from "@/components/product-card";
 import { InfoIcon } from "@/components/pdp/info-icon";
-import { getProduct, getProducts } from "@/lib/shopify";
+import { getProduct, getProducts, type ProductFull } from "@/lib/shopify";
 import { inr } from "@/lib/format";
 
 export async function generateStaticParams() {
@@ -17,6 +18,80 @@ export async function generateStaticParams() {
 
 // Blocking route: the PDP shell depends on `params` (product lookup).
 export const instant = false;
+
+const SITE_URL = "https://devamathedivine.com";
+
+async function cachedProductMetadata(handle: string): Promise<ProductFull | null> {
+  "use cache";
+  return getProduct(handle);
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ handle: string }>;
+}): Promise<Metadata> {
+  const { handle } = await params;
+  const product = await cachedProductMetadata(handle);
+  if (!product) return { title: "Product — Devama The Divine" };
+
+  const description = `Shop ${product.title} · ${inr(product.price)}. ${product.description.slice(0, 140)}…`;
+  const url = `${SITE_URL}/products/${product.handle}`;
+  return {
+    title: `${product.title} — Devama The Divine`,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title: product.title,
+      description,
+      url,
+      type: "website",
+      images: [{ url: product.image, alt: product.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: product.title,
+      description,
+      images: [product.image],
+    },
+  };
+}
+
+/** Google-rich-result product data. Safe: server data, JSON-escaped. */
+function ProductJsonLd({
+  product,
+}: {
+  product: Awaited<ReturnType<typeof getProduct>>;
+}) {
+  if (!product) return null;
+  const json = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.title,
+    image: product.images.map((i) => i.url),
+    description: product.description,
+    sku: product.handle,
+    brand: { "@type": "Brand", name: "Devama The Divine" },
+    offers: {
+      "@type": "Offer",
+      url: `${SITE_URL}/products/${product.handle}`,
+      priceCurrency: "INR",
+      price: product.price,
+      availability:
+        product.availableForSale === false
+          ? "https://schema.org/OutOfStock"
+          : "https://schema.org/InStock",
+      itemCondition: "https://schema.org/NewCondition",
+    },
+  }).replace(/</g, "\\u003c");
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: json }}
+    />
+  );
+}
 
 export default async function ProductPage({
   params,
@@ -32,6 +107,7 @@ export default async function ProductPage({
 
   return (
     <>
+      <ProductJsonLd product={product} />
       <main className="bg-cream">
         <div className="mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-6 sm:pt-10 lg:px-8">
           {/* Breadcrumb */}

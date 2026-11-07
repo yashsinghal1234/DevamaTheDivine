@@ -107,10 +107,24 @@ type ShopifyProduct = {
   priceRange: { minVariantPrice: { amount: string } };
   compareAtPriceRange: { minVariantPrice: { amount: string } | null };
   featuredImage: { url: string; altText: string | null };
+  variants?: { nodes: { id: string; availableForSale: boolean }[] };
   options: { name: string; values: string[] }[];
   /** Could be an image or a video (first media is used) */
   media?: { nodes: { previewImage?: { url: string } | null }[] };
 };
+
+/** First available variant, falling back to the first variant at all. */
+function firstVariant(
+  variants?: { nodes: { id: string; availableForSale: boolean }[] }
+): { variantId?: string; availableForSale?: boolean } {
+  const nodes = variants?.nodes ?? [];
+  if (!nodes.length) return {};
+  const available = nodes.find((v) => v.availableForSale) ?? nodes[0];
+  return {
+    variantId: available.id,
+    availableForSale: available.availableForSale,
+  };
+}
 
 function mapProduct(node: ShopifyProduct): Product {
   const price = Number(node.priceRange.minVariantPrice.amount);
@@ -129,6 +143,7 @@ function mapProduct(node: ShopifyProduct): Product {
       .filter((o) => !["Title"].includes(o.name))
       .slice(0, 2)
       .flatMap((o) => o.values.slice(0, 3)),
+    ...firstVariant(node.variants),
   };
 }
 
@@ -143,6 +158,12 @@ const PRODUCTS_QUERY = /* GraphQL */ `
         priceRange { minVariantPrice { amount } }
         compareAtPriceRange { minVariantPrice { amount } }
         featuredImage { url altText }
+        variants(first: 10) {
+          nodes {
+            id
+            availableForSale
+          }
+        }
         media(first: 5) {
           nodes {
             previewImage { url }
@@ -415,6 +436,9 @@ export type ProductFull = {
   images: { url: string; alt: string }[];
   options: { name: string; values: string[] }[];
   productType: string;
+  /** First available Shopify variant — required by the Storefront cart API. */
+  variantId?: string;
+  availableForSale?: boolean;
 };
 
 function sampleDescription(productType: string, title: string): string {
@@ -472,6 +496,12 @@ const PRODUCT_QUERY = /* GraphQL */ `
       images(first: 6) {
         edges { node { url altText } }
       }
+      variants(first: 10) {
+        nodes {
+          id
+          availableForSale
+        }
+      }
       options { name values }
     }
   }
@@ -490,6 +520,7 @@ export async function getProduct(handle: string): Promise<ProductFull | null> {
           priceRange: { minVariantPrice: { amount: string } };
           compareAtPriceRange: { minVariantPrice: { amount: string } | null };
           images: { edges: { node: { url: string; altText: string | null } }[] };
+          variants?: { nodes: { id: string; availableForSale: boolean }[] };
           options: { name: string; values: string[] }[];
         } | null;
       }>(PRODUCT_QUERY, { handle });
@@ -514,6 +545,7 @@ export async function getProduct(handle: string): Promise<ProductFull | null> {
           images: images.length ? images : [{ url: images[0]?.url ?? "", alt: node.title }],
           options: node.options.filter((o) => !["Title"].includes(o.name)),
           productType: node.productType,
+          ...firstVariant(node.variants),
         };
       }
     } catch {

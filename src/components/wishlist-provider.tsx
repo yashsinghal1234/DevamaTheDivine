@@ -18,6 +18,8 @@ export type WishlistItem = {
   image: string;
   alt: string;
   category: string;
+  /** Shopify variant id when the source product provided one. */
+  variantId?: string;
 };
 
 const STORAGE_KEY = "devama-wishlist";
@@ -39,6 +41,7 @@ export function toWishlistItem(product: {
   image: string;
   category: string;
   alt?: string;
+  variantId?: string;
 }): WishlistItem {
   return {
     handle: product.handle,
@@ -48,6 +51,7 @@ export function toWishlistItem(product: {
     image: product.image,
     alt: product.alt ?? product.title,
     category: product.category,
+    variantId: product.variantId,
   };
 }
 

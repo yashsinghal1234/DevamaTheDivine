@@ -2,7 +2,9 @@ import Reveal from "@/components/reveal";
 import ProgressSteps from "@/components/checkout/progress-steps";
 import PaymentMethods from "@/components/checkout/payment-methods";
 import OrderSummary from "@/components/checkout/order-summary";
+import LiveModeNotice from "@/components/checkout/live-mode-notice";
 import { getDemoCart, demoSubtotal } from "@/lib/demo-cart";
+import { isShopifyConfigured } from "@/lib/shopify";
 import { inr } from "@/lib/format";
 
 export const metadata = { title: "Payment — Devama The Divine" };
@@ -87,6 +89,7 @@ export default function PaymentPage() {
 
             {/* Payment method */}
             <Reveal className="mt-6">
+              {isShopifyConfigured() && <LiveModeNotice />}
               <section className="rounded-2xl border border-line bg-cream-card p-6 sm:p-8">
                 <h2 className="font-serif text-3xl font-medium text-ink sm:text-4xl">
                   Payment method
