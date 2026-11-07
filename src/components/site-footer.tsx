@@ -29,12 +29,15 @@ const cols = [
       { label: "About Us", href: "/pages/about-us" },
       { label: "Contact Us", href: "/pages/contact-us" },
       { label: "Track Your Order", href: "/track-your-order" },
-      { label: "Frequently asked questions", href: "/faq" },
+      { label: "Help / FAQ", href: "/faq" },
+      { label: "Reviews", href: "/reviews" },
+      { label: "Videos", href: "/videos" },
     ],
   },
   {
     heading: "Policies & details",
     links: [
+      { label: "Shopping information", href: "/pages/shopping-information" },
       { label: "Shipping Policy", href: "/policies/shipping-policy" },
       { label: "Refund Policy", href: "/policies/refund-policy" },
       { label: "Privacy Policy", href: "/policies/privacy-policy" },

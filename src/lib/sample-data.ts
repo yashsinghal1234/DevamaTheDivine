@@ -195,16 +195,37 @@ export const reviews: Review[] = [
     title: "A considered first choice",
     quote:
       "The product details helped me compare the beads honestly as a first-time buyer. Felt guided, not pushed, into my sadhana practice.",
+    rating: 4,
+    product: "5 Mukhi Rudraksha",
+    handle: "5-mukhi-rudraksha",
+    collection: "rudraksha",
   },
   {
     title: "The details make a difference",
     quote:
       "I appreciated being able to look at the material and size information before choosing. Everything arrived exactly as described.",
+    rating: 4.5,
+    product: "Amethyst Bracelet",
+    handle: "amethyst-bracelet",
+    collection: "bracelets",
   },
   {
     title: "A place for meaningful essentials",
     quote:
       "It's thoughtfully arranged, this collection makes browsing my home mandir feel simple and human.",
+    rating: 3.5,
+    product: "Kuber Poojan Potli",
+    handle: "kuber-potali",
+    collection: "potli",
+  },
+  {
+    title: "A simple everyday piece",
+    quote:
+      "The bead-count information helped me understand the mala and the care guidance was useful to read.",
+    rating: 3.5,
+    product: "Karungali Mala 108+1 Beads",
+    handle: "karungali-mala-original",
+    collection: "karungali",
   },
 ];
 
@@ -212,31 +233,43 @@ export const faqs: FaqItem[] = [
   {
     question: "How do I choose a Rudraksha Mukhi?",
     answer:
-      "Each Mukhi carries a distinct intention and, for some individuals, beliefs if you are choosing for a particular tradition or practice, consult knowledgeable guidance rather than relying on personal outcomes.",
+      "Mukhi refers to the natural faces or divisions of a Rudraksha bead. Compare the Mukhi, material and listing details with the practice you intend to follow. If you are choosing for a particular tradition, seek knowledgeable guidance rather than relying on promised outcomes. Our single-bead choices from 2 to 7 Mukhi are each ₹499.",
+    topic: "choosing",
   },
   {
-    question: "What can the certified authenticity details show?",
+    question: "Where can I check product-specific certification details?",
     answer:
-      "Check the certified authenticity details and supporting information on the individual product listing. If a detail is unclear or missing, contact us before placing your order.",
+      "Start with the individual product listing and any documentation described there. Certification information is product-specific, not a blanket claim about every item. Check what is covered and ask support if a detail is missing or unclear before buying. No government certification seal is implied.",
+    topic: "authenticity",
   },
   {
-    question: "How should I care for my beads and wood?",
+    question: "How should I care for beads and natural wood?",
     answer:
-      "Follow the care and guidance in your specific product. Handle beads gently, keep them away from harsh chemicals and prolonged moisture, and store them carefully for everyday use.",
+      "Handle strings and bead surfaces gently. Use a soft cloth, keep pieces away from prolonged moisture and harsh chemicals, and store them carefully between uses. Wood, natural seeds and stone bracelets can need different care: follow the instructions for your specific piece and ask support before using oils, cleaners or other treatments.",
+    topic: "care",
   },
   {
     question: "How can I track my order?",
     answer:
-      "Order tracking will be available on our new site very shortly. Meanwhile, use the Track Your Order page on our current store, or contact us for support.",
-  },
-  {
-    question: "What are the shipping and return terms?",
-    answer:
-      "All orders are currently shipped only and return terms follow the applicable terms that apply to your order. Please review these policies before you purchase.",
+      "Use Track Your Order with your order reference and the contact you used at checkout. Review the latest available status there; if information is missing, ask support with your order reference. The sample order shown in these designs is illustrative and does not represent a live shipment.",
+    topic: "orders",
   },
   {
     question: "When does the special gift offer apply?",
     answer:
-      "The announcement offers a 'Special Gift' on orders above ₹499* applies to orders strictly above ₹499; an order of exactly ₹499 does not meet that threshold.",
+      "The current offer is 'Special gift on orders above ₹499'. The value must be strictly above ₹499, not ₹499 and above. A single ₹499 item does not meet that condition. The sample basket of one Karungali Mala ₹499 and one Amethyst Bracelet ₹599 has a ₹1,098 item subtotal and meets the order-value condition.",
+    topic: "gift",
+  },
+  {
+    question: "What are the shipping fees and delivery times?",
+    answer:
+      "Shipping availability, fees and timing depend on the address and current store terms. Use the postcode lookup on a product page and review checkout information along with the current Shipping Policy before buying. Fees, tax amounts and delivery promises have not been provided for this design, so no fixed charges or dates are stated.",
+    topic: "shipping",
+  },
+  {
+    question: "Where can I understand refund or cancellation options?",
+    answer:
+      "Read the current Refund Policy and Terms of Service for the conditions that apply to your order. If you have an order-specific question, contact support with your reference and the details of your concern. Do not assume a refund window, cancellation option or eligibility from this design; the current policy text must be supplied before launch.",
+    topic: "refunds",
   },
 ];

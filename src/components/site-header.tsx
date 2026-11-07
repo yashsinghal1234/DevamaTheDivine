@@ -27,7 +27,8 @@ const navLinks = [
 ];
 
 // Cart will come alive once the Shopify Storefront cart is wired up.
-const cartCount = 0;
+// The illustrative basket (/cart) currently holds two pieces.
+const cartCount = 2;
 
 export default function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);

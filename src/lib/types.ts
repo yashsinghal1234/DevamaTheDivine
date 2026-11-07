@@ -26,11 +26,18 @@ export type CollectionCard = {
 export type Review = {
   title: string;
   quote: string;
+  /** Optional review-page fields (sample feedback references a product). */
+  rating?: number;
+  product?: string;
+  handle?: string;
+  collection?: string;
 };
 
 export type FaqItem = {
   question: string;
   answer: string;
+  /** Topic key used by the /faq hub page (see faq-topics.ts). */
+  topic?: string;
 };
 
 export type SiteSettings = {

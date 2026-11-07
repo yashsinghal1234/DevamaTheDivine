@@ -130,6 +130,26 @@ export const IconSliders = (p: P) => (
   </Svg>
 );
 
+export const IconStar = (p: P) => (
+  <Svg {...p} fill="currentColor" stroke="none">
+    <path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.6 1.1 6.5-5.8-3.05-5.8 3.05 1.1-6.5-4.7-4.6 6.5-.95z" />
+  </Svg>
+);
+
+export const IconCamera = (p: P) => (
+  <Svg {...p}>
+    <path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.6a1 1 0 0 0 .83-.45l.74-1.1A1 1 0 0 1 10.5 4h3a1 1 0 0 1 .83.45l.74 1.1a1 1 0 0 0 .83.45h1.6A2.5 2.5 0 0 1 20 8.5v8A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5z" />
+    <circle cx="12" cy="12" r="3.2" />
+  </Svg>
+);
+
+export const IconVideo = (p: P) => (
+  <Svg {...p}>
+    <rect x="3" y="7" width="12" height="10" rx="2.5" />
+    <path d="M15 11l6-3.5v9L15 13" />
+  </Svg>
+);
+
 export const IconCircleDot = (p: P) => (
   <Svg {...p}>
     <circle cx="12" cy="12" r="8.5" />
