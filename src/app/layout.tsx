@@ -2,10 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Poppins } from "next/font/google";
 import { WishlistProvider } from "@/components/wishlist-provider";
 import { CartProvider } from "@/components/cart-provider";
-import AnnouncementBar from "@/components/announcement-bar";
-import SiteHeader from "@/components/site-header";
-import ContactCta from "@/components/contact-cta";
-import SiteFooter from "@/components/site-footer";
+import { AuthProvider } from "@/components/auth-provider";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -22,15 +19,15 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://devamathedivine.com"),
-  title: "Devama The Divine — Where Faith Meets Authenticity",
+  title: "Devama The Divine – Where Faith Meets Authenticity",
   description:
     "Discover Rudraksha, sacred bead for meditation. Meaningful pieces for daily practice, design cases delivered with clear product information and thoughtful guidance.",
   openGraph: {
     type: "website",
     siteName: "Devama The Divine",
-    title: "Devama The Divine — Where Faith Meets Authenticity",
+    title: "Devama The Divine – Where Faith Meets Authenticity",
     description:
-      "Rudraksha malas, karungali, gemstone bracelets and ritual potli — with clear product information for considered choices.",
+      "Rudraksha malas, karungali, gemstone bracelets and ritual potli – with clear product information for considered choices.",
   },
 };
 
@@ -41,19 +38,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${cormorant.variable} ${poppins.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">
-        <CartProvider>
-          <WishlistProvider>
-            <AnnouncementBar />
-            <SiteHeader />
-            {children}
-            <ContactCta />
-            <SiteFooter
-              instagram="https://www.instagram.com/devamathedivine"
-              youtube="https://youtube.com/@devamathedivine8939"
-              pinterest="https://pinterest.com/devamathedivine_official"
-            />
-          </WishlistProvider>
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <WishlistProvider>
+              {children}
+            </WishlistProvider>
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );

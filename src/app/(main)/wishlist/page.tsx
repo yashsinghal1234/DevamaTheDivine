@@ -6,6 +6,7 @@ import Reveal from "@/components/reveal";
 import { InfoIcon } from "@/components/pdp/info-icon";
 import { IconArrowRight, IconArrowUpRight, IconHeart } from "@/components/icons";
 import { useWishlist, type WishlistItem } from "@/components/wishlist-provider";
+import { useAuth } from "@/components/auth-provider";
 import { inr } from "@/lib/format";
 
 const FALLBACK_IMAGES = [
@@ -17,6 +18,7 @@ const FALLBACK_IMAGES = [
 
 export default function WishlistPage() {
   const { items, remove } = useWishlist();
+  const { ready, isLoggedIn } = useAuth();
 
   return (
     <>
@@ -52,7 +54,35 @@ export default function WishlistPage() {
             </div>
           </Reveal>
 
-          {items.length === 0 ? (
+          {ready && !isLoggedIn ? (
+            <Reveal className="mt-12">
+              <div className="flex flex-col items-center rounded-3xl border border-line bg-cream-card px-6 py-16 text-center">
+                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-gold/15 text-maroon">
+                  <IconHeart className="h-6 w-6" />
+                </span>
+                <p className="mt-5 font-serif text-3xl font-medium text-ink">
+                  Sign in to view your wishlist
+                </p>
+                <p className="mt-2 max-w-sm text-sm font-light text-clay">
+                  Your saved sacred pieces are kept safe in your account. Sign in or create an account to access them.
+                </p>
+                <div className="mt-6 flex items-center gap-3">
+                  <a
+                    href="/login"
+                    className="btn-sheen rounded-full bg-maroon px-6 py-3 text-sm font-medium text-cream hover:bg-maroon-deep"
+                  >
+                    Sign in
+                  </a>
+                  <a
+                    href="/signup"
+                    className="rounded-full border border-line bg-white/70 px-6 py-3 text-sm font-medium text-ink hover:border-gold-deep"
+                  >
+                    Create account
+                  </a>
+                </div>
+              </div>
+            </Reveal>
+          ) : items.length === 0 ? (
             <Reveal className="mt-12">
               <div className="flex flex-col items-center rounded-3xl border border-dashed border-line bg-cream-card px-6 py-16 text-center">
                 <span className="flex h-14 w-14 items-center justify-center rounded-full bg-gold/10 text-gold-deep">

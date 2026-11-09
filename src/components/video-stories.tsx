@@ -1,6 +1,7 @@
 import Reveal from "./reveal";
 import { IconArrowRight, IconPlay } from "./icons";
 import { getVideoStories, type VideoStory } from "@/lib/shopify";
+import ChunkedVideo from "./chunked-video";
 
 export default async function VideoStories() {
   const stories: VideoStory[] = await getVideoStories();
@@ -16,10 +17,10 @@ export default async function VideoStories() {
             </h2>
           </div>
           <a
-            href="/videos"
+            href="/videos/watch"
             className="group inline-flex shrink-0 items-center gap-2 text-sm font-medium text-maroon hover:text-terracotta"
           >
-            View all videos
+            Watch all videos (YouTube mode)
             <IconArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </a>
         </div>
@@ -30,15 +31,12 @@ export default async function VideoStories() {
               <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-cream-card transition-all duration-300 hover:-translate-y-1 hover:border-gold/60 hover:shadow-[0_16px_36px_-16px_rgba(54,34,23,0.28)]">
                 {story.poster && story.videoUrl ? (
                   <div className="relative aspect-video overflow-hidden">
-                    <video
-                      className="h-full w-full object-cover"
+                    <ChunkedVideo
+                      src={story.videoUrl}
                       poster={story.poster}
-                      preload="metadata"
+                      className="h-full w-full object-cover"
                       controls
-                      playsInline
-                    >
-                      <source src={story.videoUrl} />
-                    </video>
+                    />
                   </div>
                 ) : (
                   <div className="p-6 pb-0">

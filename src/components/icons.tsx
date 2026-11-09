@@ -38,6 +38,7 @@ export const IconUser = (p: P) => (
 export const IconHeart = (p: P) => (
   <Svg {...p}>
     <path d="M12 21C7 17 4 13.6 4 9.8 4 7 6.2 5 8.6 5c1.5 0 2.7.8 3.4 2 .7-1.2 1.9-2 3.4-2C17.8 5 20 7 20 9.8c0 3.8-3 7.2-8 11.2z" />
+    <circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" />
   </Svg>
 );
 

@@ -10,14 +10,15 @@ import VideoStories from "@/components/video-stories";
 import Testimonials from "@/components/testimonials";
 import FaqSection from "@/components/faq-section";
 
-import { getCollections, getFaqs, getProducts, getReviews } from "@/lib/shopify";
+import { getCollections, getFaqs, getProducts, getReviews, getSectionImages } from "@/lib/shopify";
 
 export default async function Home() {
-  const [products, collections, reviews, faqs] = await Promise.all([
+  const [products, collections, reviews, faqs, sectionImages] = await Promise.all([
     getProducts("edit"),
     getCollections(),
     getReviews(),
     getFaqs(),
+    getSectionImages(),
   ]);
   // The homepage edit grid shows a curated eight; the full catalogue
   // (with pagination) lives on /collections/all.
@@ -25,7 +26,7 @@ export default async function Home() {
 
   return (
     <main className="overflow-x-clip">
-      <Hero />
+      <Hero initialImage={sectionImages.hero} />
       <UspStrip />
       <PromoBanner />
       <CollectionCards collections={collections} />
